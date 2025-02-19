@@ -1,0 +1,82 @@
+class Carnet:
+    def __init__(self, nombre, apellido, edad, cedula, genero, semestre, promedio):
+        self.nombre = nombre
+        self.apellido = apellido
+        self.edad = edad
+        self.cedula = cedula
+        self.genero = genero
+        self.semestre = semestre
+        self.promedio = promedio
+
+# Función para ingresar los datos de un estudiante
+def ingresar_estudiante():
+    nombre = input("Ingrese el nombre del estudiante: ")
+    apellido = input("Ingrese el apellido del estudiante: ")
+    edad = int(input("Ingrese la edad del estudiante: "))
+    cedula = input("Ingrese la cédula del estudiante: ")
+    genero = input("Ingrese el género (M/F): ").upper()
+
+    # Validar género
+    while genero not in ['M', 'F']:
+        print("Género inválido. Debe ser 'M' o 'F'.")
+        genero = input("Ingrese el género (M/F): ").upper()
+
+    semestre = input("Ingrese el semestre que cursa el estudiante: ")
+
+    # Validar promedio entre 0 y 10
+    while True:
+        try:
+            promedio = float(input("Ingrese el promedio general (0-10): "))
+            if 0 <= promedio <= 10:
+                break
+            else:
+                print("El promedio debe estar entre 0 y 10.")
+        except ValueError:
+            print("Por favor, ingrese un número válido para el promedio.")
+    
+    return Carnet(nombre, apellido, edad, cedula, genero, semestre, promedio)
+
+# Función para mostrar los datos de un estudiante
+def mostrar_estudiante(estudiante):
+    print("\nDatos del Estudiante:")
+    print(f"Nombre: {estudiante.nombre}")
+    print(f"Apellido: {estudiante.apellido}")
+    print(f"Edad: {estudiante.edad}")
+    print(f"Cédula: {estudiante.cedula}")
+    print(f"Género: {estudiante.genero}")
+    print(f"Semestre: {estudiante.semestre}")
+    print(f"Promedio: {estudiante.promedio}")
+
+# Función principal
+def main():
+    # Número de estudiantes a ingresar
+    n = int(input("Ingrese la cantidad de estudiantes: "))
+    
+    mujeres = 0
+    varones = 0
+    estudiantes = []
+
+    # Ingresar y almacenar los datos de los estudiantes
+    for _ in range(n):
+        print(f"\nIngreso de datos del estudiante {_+1}:")
+        estudiante = ingresar_estudiante()
+        estudiantes.append(estudiante)
+
+        # Contar los grupos por género
+        if estudiante.genero == 'F':
+            mujeres += 1
+        else:
+            varones += 1
+    
+    # Mostrar los datos de cada estudiante
+    print("\nDatos de los estudiantes ingresados:")
+    for estudiante in estudiantes:
+        mostrar_estudiante(estudiante)
+
+    # Mostrar el número de mujeres y varones
+    print(f"\nNúmero de mujeres: {mujeres}")
+    print(f"Número de varones: {varones}")
+
+# Ejecutar el programa
+if __name__ == "__main__":
+    main()
