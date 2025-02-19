@@ -1,82 +1,141 @@
-class Carnet:
-    def __init__(self, nombre, apellido, edad, cedula, genero, semestre, promedio):
-        self.nombre = nombre
-        self.apellido = apellido
-        self.edad = edad
-        self.cedula = cedula
-        self.genero = genero
-        self.semestre = semestre
-        self.promedio = promedio
+#include <iostream>
+using namespace std;
 
-# Función para ingresar los datos de un estudiante
-def ingresar_estudiante():
-    nombre = input("Ingrese el nombre del estudiante: ")
-    apellido = input("Ingrese el apellido del estudiante: ")
-    edad = int(input("Ingrese la edad del estudiante: "))
-    cedula = input("Ingrese la cédula del estudiante: ")
-    genero = input("Ingrese el género (M/F): ").upper()
+int main() {
+    int N;
+    cout << "Ingrese el tamaño de la matriz cuadrada (N): ";
+    cin >> N;
 
-    # Validar género
-    while genero not in ['M', 'F']:
-        print("Género inválido. Debe ser 'M' o 'F'.")
-        genero = input("Ingrese el género (M/F): ").upper()
+    // Crear la matriz dinámica
+    int** matriz = new int*[N];
+    for (int i = 0; i < N; i++) {
+        matriz[i] = new int[N];
+    }
 
-    semestre = input("Ingrese el semestre que cursa el estudiante: ")
+    // Llenar la matriz
+    cout << "Ingrese los elementos de la matriz (" << N << "x" << N << "):\n";
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            cin >> matriz[i][j];
+        }
+    }
 
-    # Validar promedio entre 0 y 10
-    while True:
-        try:
-            promedio = float(input("Ingrese el promedio general (0-10): "))
-            if 0 <= promedio <= 10:
-                break
-            else:
-                print("El promedio debe estar entre 0 y 10.")
-        except ValueError:
-            print("Por favor, ingrese un número válido para el promedio.")
-    
-    return Carnet(nombre, apellido, edad, cedula, genero, semestre, promedio)
+    int opcion;
+    do {
+        // Menú de opciones
+        cout << "\nMenú de operaciones:\n";
+        cout << "1. Sumar todos los elementos de la matriz.\n";
+        cout << "2. Reemplazar diagonal principal por un número.\n";
+        cout << "3. Buscar un número en la matriz.\n";
+        cout << "4. Generar nueva matriz con valores 1 (par) y 0 (impar).\n";
+        cout << "0. Salir.\n";
+        cout << "Ingrese una opción: ";
+        cin >> opcion;
 
-# Función para mostrar los datos de un estudiante
-def mostrar_estudiante(estudiante):
-    print("\nDatos del Estudiante:")
-    print(f"Nombre: {estudiante.nombre}")
-    print(f"Apellido: {estudiante.apellido}")
-    print(f"Edad: {estudiante.edad}")
-    print(f"Cédula: {estudiante.cedula}")
-    print(f"Género: {estudiante.genero}")
-    print(f"Semestre: {estudiante.semestre}")
-    print(f"Promedio: {estudiante.promedio}")
+        switch (opcion) {
+            case 1: {
+                // Sumar todos los elementos de la matriz
+                int sumaTotal = 0;
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
+                        sumaTotal += matriz[i][j];
+                    }
+                }
+                cout << "La suma total de todos los elementos es: " << sumaTotal << endl;
+                break;
+            }
 
-# Función principal
-def main():
-    # Número de estudiantes a ingresar
-    n = int(input("Ingrese la cantidad de estudiantes: "))
-    
-    mujeres = 0
-    varones = 0
-    estudiantes = []
+            case 2: {
+                // Reemplazar diagonal principal
+                int numDiagonal;
+                cout << "Ingrese el número para reemplazar la diagonal principal: ";
+                cin >> numDiagonal;
+                for (int i = 0; i < N; i++) {
+                    matriz[i][i] = numDiagonal;
+                }
 
-    # Ingresar y almacenar los datos de los estudiantes
-    for _ in range(n):
-        print(f"\nIngreso de datos del estudiante {_+1}:")
-        estudiante = ingresar_estudiante()
-        estudiantes.append(estudiante)
+                // Mostrar la nueva matriz
+                cout << "Matriz con diagonal reemplazada:\n";
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
+                        cout << matriz[i][j] << " ";
+                    }
+                    cout << endl;
+                }
+                break;
+            }
 
-        # Contar los grupos por género
-        if estudiante.genero == 'F':
-            mujeres += 1
-        else:
-            varones += 1
-    
-    # Mostrar los datos de cada estudiante
-    print("\nDatos de los estudiantes ingresados:")
-    for estudiante in estudiantes:
-        mostrar_estudiante(estudiante)
+            case 3: {
+                // Buscar un número en la matriz
+                int numeroBuscar;
+                cout << "Ingrese el número a buscar: ";
+                cin >> numeroBuscar;
+                bool encontrado = false;
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
+                        if (matriz[i][j] == numeroBuscar) {
+                            cout << "El número se encuentra en la posición [" << i << "][" << j << "].\n";
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (encontrado) break;
+                }
+                if (!encontrado) {
+                    cout << "El número no se encuentra en la matriz.\n";
+                }
+                break;
+            }
 
-    # Mostrar el número de mujeres y varones
-    print(f"\nNúmero de mujeres: {mujeres}")
-    print(f"Número de varones: {varones}")
+            case 4: {
+                // Generar nueva matriz con valores 1 (par) y 0 (impar)
+                int** nuevaMatriz = new int*[N];
+                for (int i = 0; i < N; i++) {
+                    nuevaMatriz[i] = new int[N];
+                }
 
-# Ejecutar el programa
-if __name__ == "__main__":
-    main()
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
+                        if (matriz[i][j] % 2 == 0) {
+                            nuevaMatriz[i][j] = 1; // Par
+                        } else {
+                            nuevaMatriz[i][j] = 0; // Impar
+                        }
+                    }
+                }
+
+                // Mostrar la nueva matriz
+                cout << "Nueva matriz con 1 (par) y 0 (impar):\n";
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
+                        cout << nuevaMatriz[i][j] << " ";
+                    }
+                    cout << endl;
+                }
+
+                // Liberar memoria de la nueva matriz
+                for (int i = 0; i < N; i++) {
+                    delete[] nuevaMatriz[i];
+                }
+                delete[] nuevaMatriz;
+                break;
+            }
+
+            case 0:
+                cout << "Saliendo del programa.\n";
+                break;
+
+            default:
+                cout << "Opción no válida. Intente de nuevo.\n";
+                break;
+        }
+    } while (opcion != 0);
+
+    // Liberar memoria de la matriz original
+    for (int i = 0; i < N; i++) {
+        delete[] matriz[i];
+    }
+    delete[] matriz;
+
+    return 0;
+}
